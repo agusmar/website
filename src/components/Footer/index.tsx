@@ -9,17 +9,22 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSettings } from '@/hooks/api';
+import useTranslation from 'next-translate/useTranslation';
 
 const Footer: React.FC = () => {
   const {
     data: { socialnetworks },
   } = useSettings();
+  const { t } = useTranslation('common');
 
   const navItems = [
-    { title: 'Únete a Discord', link: 'https://discord.gg/frontendcafe' },
-    { title: 'Proyectos CMYK', link: '/cmyk' },
-    { title: 'Mentorías', link: '/mentorias' },
-    { title: 'Prácticas de inglés', link: '/ingles' },
+    {
+      title: t('footer.links.discord'),
+      link: 'https://discord.gg/frontendcafe',
+    },
+    { title: t('footer.links.cmyk'), link: '/cmyk' },
+    { title: t('footer.links.mentors'), link: '/mentorias' },
+    { title: t('footer.links.english'), link: '/ingles' },
   ];
 
   const currentYear = new Date().getFullYear();
@@ -53,7 +58,7 @@ const Footer: React.FC = () => {
 
         <div className="flex flex-col justify-center gap-3">
           <p className="w-auto font-medium text-center md:text-left">
-            Encuéntranos en
+            {t('footer.findUs')}
           </p>
           <div className="flex justify-center gap-3 md:justify-start">
             {socialnetworks?.twitter && (
