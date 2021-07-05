@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { GetStaticProps } from 'next';
 
 import MentorList from '../../components/MentorList';
@@ -9,6 +10,7 @@ import { getAllMentors, getMentoringTopics } from '../../lib/api';
 import { mentorsQuery, mentorsTopicsQuery } from '../../lib/queries';
 import { usePreviewSubscription } from '../../lib/sanity';
 import { getLayout } from '@/utils/get-layout';
+import MentorshipStep from '@/components/MentorshipStep';
 
 type MentorshipsPageProps = {
   mentors: Mentor[];
@@ -31,6 +33,21 @@ const MentorshipsPage: React.FC<MentorshipsPageProps> = ({
     enabled: preview,
   });
 
+  const infoStep = [
+    {
+        number: 1,
+        textStep: 'Lo primero es encontrar un mentor cuyo perfil se ajuste a tus intereses y con el que sientas que puede ayudarte en lo que necesitas.'
+    },
+    {
+        number: 2,
+        textStep: 'Luego, debes contactar a los mentores y reservar la fecha y el horario, adjuntando un formulario con tus datos personales.'
+    },
+    {
+        number: 3,
+        textStep: 'Por último, agrega las dudas puntuales que buscas resolver para ayudarlos a prepararse mejor y así aprovechar el tiempo al máximo.'
+    }
+  ]
+
   return (
     <Layout
       title="Mentorías"
@@ -38,101 +55,45 @@ const MentorshipsPage: React.FC<MentorshipsPageProps> = ({
       preview={preview}
     >
       <MentorshipsHero />
-      <MentorshipsSteps />
+      <div className="py-16 flex flex-col justify-center lg:flex-row" style={{backgroundColor: '#f7f7f7'}}>
+        <div className="container mx-auto flex px-5 pb-4 flex-col items-center lg:items-start md:px-20">
+          <h2 className="inline-block lg:hidden text-3xl lg:text-5xl font-black text-center pb-6 text-gray-800">
+            ¿Por dónde empiezo?
+          </h2>
+          {
+            infoStep.map((s, key) => {
+              return <MentorshipStep number={s.number} textStep={s.textStep} key={key}/>
+            })
+          }
+        </div>
+        <div className="container mx-auto px-10 pt-4 flex flex-col items-center lg:items-end text-center lg:text-right">
+          <div className="pb-10 text-gray-800">  
+            <h2 className="hidden lg:inline-block text-3xl lg:text-5xl font-black pb-10 leading-10">A tener en cuenta</h2>
+            <p>
+              Las mentorías son exclusivas para miembros de <strong className="font-bold">FRONTEND</strong>
+              <strong className="font-semibold">CAFE</strong> ya que suceden en nuestro servidor de Discord.
+              Asegúrate de poder compromenterte con el mentor antes de hacer la reserva, ¡y
+              recuerda ser puntual!
+              <br /><br />
+              Si tienes más dudas puedes hacerlas dentro del canal de #📚︱consultas-mentorias.
+            </p>
+          </div>
+          <Link href="https://discord.gg/frontendcafe">
+            <a
+              target="_blank"
+              className="bg-secondary hover:bg-secondarydark text-white text-center font-bold py-2 px-4 rounded my-3 block w-80"
+              style={{ transition: 'all .15s ease' }}
+            >
+              Súmate a Discord
+            </a>
+          </Link>
+        </div>
+      </div>
       <MentorList topics={topics} mentors={mentors} />
     </Layout>
   );
 };
 
-const MentorshipsSteps: React.FC = () => {
-  return (
-    <section className=" bg-indigo-50 text-gray-700 body-font">
-      <div className="container px-5 py-32 mx-auto">
-        <div className="text-center mb-20">
-          <h1
-            className="sm:text-3xl text-2xl font-medium title-font text-gray-900
-            mb-4"
-          >
-            ¿Por dónde empiezo? 🤔
-          </h1>
-          <p className="text-base text-left leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto">
-            El procedimiento para sumarte a las mentorías de FrontendCafé consta
-            de tres simples pasos, resumidos en <strong>encontrar</strong> tu
-            mentor, <strong>coordinar</strong> un encuentro y{' '}
-            <strong>prepararte</strong> para la mentoría.
-          </p>
-          <div className="flex mt-6 justify-center">
-            <div className="w-16 h-1 rounded-full bg-secondary inline-flex"></div>
-          </div>
-        </div>
-        <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4">
-          <div
-            className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col text-center
-            items-center transition duration-500 ease-in-out transform hover:-translate-y-6 hover:scale-105 cursor-pointer"
-          >
-            <img
-              className="w-64 object-cover object-center rounded "
-              alt="schedule"
-              src="img/engines-bro.svg"
-            />
-            <div className="flex-grow text-left">
-              <h2 className="text-gray-900 text-lg title-font font-medium mb-3">
-                <strong>Paso 1:</strong> Encontrá tu mentor 🔍👀
-              </h2>
-              <p className="leading-relaxed text-base text-left">
-                El primer paso es encontrar un mentor cuyo perfil se ajuste a
-                tus intereses y sientas que pueda ayudarte en lo que necesites.
-              </p>
-            </div>
-          </div>
-          <div
-            className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col text-center
-            items-center transition duration-500 ease-in-out transform hover:-translate-y-6 hover:scale-105 cursor-pointer"
-          >
-            <img
-              className="w-64 object-cover object-center rounded"
-              alt="schedule"
-              src="img/schedule-bro.svg"
-            />
-            <div className="flex-grow text-left">
-              <h2 className="text-gray-900 text-lg title-font font-medium mb-3">
-                <strong>Paso 2:</strong> Coordiná un encuentro 📅✔️
-              </h2>
-              <p className="leading-relaxed text-base">
-                Luego, deberás contactar a los mentores a través de sus agendas
-                virtuales y reservar una fecha y hora entre las disponibles. Al
-                concertar el encuentro, podés enviar un adelanto de las dudas
-                que buscás resolver.
-              </p>
-            </div>
-          </div>
-          <div
-            className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col text-center
-            items-center transition duration-500 ease-in-out transform hover:-translate-y-6 hover:scale-105 cursor-pointer"
-          >
-            <img
-              className="w-64 object-cover object-center rounded"
-              alt="schedule"
-              src="img/reading-bro.svg"
-            />
-
-            <div className="flex-grow text-left">
-              <h2 className="text-gray-900 text-lg title-font font-medium mb-3">
-                <strong>Paso 3:</strong> Preparate para la mentoría 📝⏳
-              </h2>
-              <p className="mb-2 leading-relaxed text-base">
-                Mientras esperás que llegue la fecha acordada, podés enviar
-                consultas a tu mentor para ayudar a prepararnos mejor y
-                aprovechar el tiempo al máximo.
-              </p>
-              <p>¡Recordá ser puntual! ⌚</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   const mentors = await getAllMentors(preview);
