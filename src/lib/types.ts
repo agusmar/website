@@ -1,3 +1,13 @@
+import NextAuth from 'next-auth';
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      name: string;
+    };
+  }
+}
 export interface Settings {
   description: string;
   heroBackground: Image;
@@ -163,23 +173,6 @@ export interface Person {
   github?: string;
   fecTeam?: boolean;
 }
-
-export type Profile = {
-  date: string;
-  email: string;
-  name: string;
-  available: boolean;
-  discord: string;
-  role: string;
-  technologies: string[];
-  portfolio: string;
-  linkedin: string;
-  twitter: string;
-  github: string;
-  description: string;
-  image: string;
-  nationality: string;
-};
 
 export type Tweet = {
   id: string;
